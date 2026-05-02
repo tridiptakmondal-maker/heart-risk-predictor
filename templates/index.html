@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Health Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .card { border: none; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; }
+        .header-section { background: linear-gradient(135deg, #0062cc, #007bff); color: white; padding: 30px; }
+        .form-label { font-weight: 600; color: #495057; }
+        .btn-analyze { background-color: #007bff; border: none; padding: 12px 40px; font-size: 1.1rem; border-radius: 50px; transition: all 0.3s; }
+        .btn-analyze:hover { background-color: #0056b3; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,123,255,0.4); }
+        .medical-note { font-size: 0.85rem; color: #6c757d; border-top: 1px solid #dee2e6; padding-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="header-section text-center">
+                        <h2 class="mb-1">Heart Disease Risk Assessment</h2>
+                        <p class="mb-0 opacity-75">Advanced Clinical AI (Trained on 70,000 Patient Records)</p>
+                    </div>
+                    
+                    <form action="/predict" method="POST" class="p-4 p-md-5 bg-white">
+                        <div class="row g-4">
+                            <!-- Basic Demographics -->
+                            <div class="col-md-6">
+                                <label class="form-label">Age (Years)</label>
+                                <input type="number" name="age" class="form-control form-control-lg" required placeholder="e.g. 52">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Gender</label>
+                                <select name="gender" class="form-select form-select-lg">
+                                    <option value="1">Female</option>
+                                    <option value="2">Male</option>
+                                </select>
+                            </div>
+
+                            <!-- Physical Metrics -->
+                            <div class="col-md-6">
+                                <label class="form-label">Height (cm)</label>
+                                <input type="number" name="height" class="form-control form-control-lg" required placeholder="e.g. 170">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Weight (kg)</label>
+                                <input type="number" step="0.1" name="weight" class="form-control form-control-lg" required placeholder="e.g. 75">
+                            </div>
+
+                            <!-- Blood Pressure Reading -->
+                            <div class="col-md-6">
+                                <label class="form-label">Systolic BP (High Number)</label>
+                                <input type="number" name="ap_hi" class="form-control form-control-lg" required placeholder="e.g. 120">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Diastolic BP (Low Number)</label>
+                                <input type="number" name="ap_lo" class="form-control form-control-lg" required placeholder="e.g. 80">
+                            </div>
+
+                            <!-- Laboratory Results -->
+                            <div class="col-md-6">
+                                <label class="form-label">Cholesterol Level</label>
+                                <select name="cholesterol" class="form-select form-select-lg">
+                                    <option value="1">Normal (< 200 mg/dL)</option>
+                                    <option value="2">Above Normal (200 - 239 mg/dL)</option>
+                                    <option value="3">Well Above Normal (≥ 240 mg/dL)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Glucose Level (Fasting)</label>
+                                <select name="gluc" class="form-select form-select-lg">
+                                    <option value="1">Normal (< 100 mg/dL)</option>
+                                    <option value="2">Above Normal (100 - 125 mg/dL)</option>
+                                    <option value="3">Well Above Normal (≥ 126 mg/dL)</option>
+                                </select>
+                            </div>
+
+                            <!-- Lifestyle Factors -->
+                            <div class="col-md-4">
+                                <label class="form-label d-block">Smoking Status</label>
+                                <div class="btn-group w-100" role="group">
+                                    <input type="radio" class="btn-check" name="smoke" id="smokeYes" value="1">
+                                    <label class="btn btn-outline-primary" for="smokeYes">Yes</label>
+                                    <input type="radio" class="btn-check" name="smoke" id="smokeNo" value="0" checked>
+                                    <label class="btn btn-outline-primary" for="smokeNo">No</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label d-block">Alcohol Consumption</label>
+                                <div class="btn-group w-100" role="group">
+                                    <input type="radio" class="btn-check" name="alco" id="alcoYes" value="1">
+                                    <label class="btn btn-outline-primary" for="alcoYes">Yes</label>
+                                    <input type="radio" class="btn-check" name="alco" id="alcoNo" value="0" checked>
+                                    <label class="btn btn-outline-primary" for="alcoNo">No</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label d-block">Physical Activity</label>
+                                <div class="btn-group w-100" role="group">
+                                    <input type="radio" class="btn-check" name="active" id="activeYes" value="1" checked>
+                                    <label class="btn btn-outline-primary" for="activeYes">Active</label>
+                                    <input type="radio" class="btn-check" name="active" id="activeNo" value="0">
+                                    <label class="btn btn-outline-primary" for="activeNo">Sedentary</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-5 text-center">
+                                <button type="submit" class="btn btn-analyze text-white fw-bold">RUN RISK ANALYSIS</button>
+                                <div class="medical-note mt-4">
+                                    <p>Disclaimer: This tool provides a risk estimate based on statistical data and is intended for informational purposes only. It does not replace professional medical advice.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
